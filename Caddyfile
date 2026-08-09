@@ -1,0 +1,30 @@
+{
+	admin off
+	persist_config off
+	auto_https off
+}
+
+:{$PORT:80} {
+	encode gzip
+
+	# A SPA chama /api/* na PRÓPRIA origem dela; este bloco encaminha essas
+	# chamadas para o backend. Manter tudo same-origin é intencional: a
+	# autenticação usa cookie de sessão do PHP com SameSite=Lax, e o backend
+	# não implementa CORS. Se o navegador falasse direto com o domínio do
+	# backend, o cookie viraria de terceiros e o login não persistiria.
+	#
+	# Não há reescrita de caminho aqui de propósito: backend/public/index.php
+	# já remove o prefixo /api sozinho antes de casar as rotas.
+	handle /api/* {
+		reverse_proxy {$BACKEND_URL:https://backend-production-a855.up.railway.app} {
+			header_up Host {upstream_hostport}
+		}
+	}
+
+	# Fallback de SPA: qualquer rota do react-router cai no index.html.
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}

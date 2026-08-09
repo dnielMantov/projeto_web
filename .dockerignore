@@ -1,0 +1,10 @@
+node_modules
+dist
+.git
+backend
+guidelines
+*.pdf
+*.md
+.env
+.env.*
+!.env.example
