@@ -1,0 +1,36 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: compia_loja
+    ports:
+      - "3306:3306"
+    volumes:
+      - compia_db_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d:Z
+    # No primeiro boot o entrypoint do MySQL sobe um servidor temporário só de
+    # socket (port: 0) para aplicar o schema, derruba-o e só então sobe o real.
+    # Nessa janela o container já aparece como "Up" mas recusa conexões. Pingar
+    # via TCP (e não pelo socket) faz o healthcheck só ficar verde no fim disso.
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 20s
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app:Z
+
+volumes:
+  compia_db_data:

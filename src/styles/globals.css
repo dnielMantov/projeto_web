@@ -1,0 +1,50 @@
+/* Animações compartilhadas pelo site inteiro. Classes utilitárias em vez de
+   inline styles porque @keyframes não pode ser expresso via style={}. */
+
+@keyframes cart-icon-bump {
+  0% { transform: scale(1) rotate(0deg); color: inherit; }
+  20% { transform: scale(1.3) rotate(-12deg); color: #06b6d4; }
+  40% { transform: scale(0.92) rotate(10deg); color: #06b6d4; }
+  60% { transform: scale(1.18) rotate(-6deg); color: #06b6d4; }
+  80% { transform: scale(0.97) rotate(3deg); color: #06b6d4; }
+  100% { transform: scale(1) rotate(0deg); color: inherit; }
+}
+.cart-icon-bump {
+  animation: cart-icon-bump 0.6s ease;
+  display: inline-flex;
+}
+
+/* Anima o clique de "adicionar ao carrinho": discreta, sem troca de cor,
+   para não repetir a ANIMAÇÃO 0 do ícone do cabeçalho. */
+@keyframes add-to-cart-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.86); }
+  100% { transform: scale(1); }
+}
+.add-to-cart-pop {
+  animation: add-to-cart-pop 0.32s ease;
+}
+
+@keyframes cart-toast-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.cart-toast-enter {
+  animation: cart-toast-in 0.22s ease;
+}
+
+@keyframes confirm-dialog-in {
+  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.confirm-dialog-in {
+  animation: confirm-dialog-in 0.18s ease;
+}
+
+@keyframes dropdown-menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.dropdown-menu-in {
+  animation: dropdown-menu-in 0.15s ease;
+}
