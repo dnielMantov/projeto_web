@@ -78,20 +78,27 @@ export default function CartPage() {
     return (
       <div
         style={{ backgroundColor: '#070d1a', minHeight: '50vh' }}
-        className="flex flex-col items-center justify-center gap-6 py-12"
+        className="flex flex-col items-center justify-center gap-8 py-16"
       >
         <div
-          className="flex items-center justify-center"
-          style={{ width: '80px', height: '80px', borderRadius: '50%', background: '#0f1829', border: '1px solid #1e2d4a' }}
+          className="flex items-center justify-center animate-pulse"
+          style={{
+            width: '120px',
+            height: '120px',
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, rgba(6,182,212,0.15), rgba(14,141,209,0.15))',
+            border: '2px solid rgba(6,182,212,0.3)',
+            boxShadow: '0 0 40px rgba(6,182,212,0.1)',
+          }}
         >
-          <ShoppingCart size={36} style={{ color: '#1e2d4a' }} />
+          <ShoppingCart size={56} style={{ color: '#06b6d4' }} />
         </div>
-        <div style={{ textAlign: 'center' }}>
-          <h2 style={{ color: '#f1f5f9', fontWeight: 800, fontSize: '1.5rem', marginBottom: '0.5rem' }}>
+        <div style={{ textAlign: 'center', maxWidth: '400px' }}>
+          <h2 style={{ color: '#f1f5f9', fontWeight: 800, fontSize: '2rem', marginBottom: '0.75rem' }}>
             Seu carrinho está vazio
           </h2>
-          <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
-            Explore nosso catálogo e adicione títulos ao carrinho.
+          <p style={{ color: '#94a3b8', fontSize: '1rem', lineHeight: '1.6' }}>
+            Explore nosso catálogo de livros incríveis e comece sua próxima leitura hoje mesmo.
           </p>
         </div>
         <Link
@@ -100,12 +107,26 @@ export default function CartPage() {
             background: 'linear-gradient(135deg, #06b6d4, #0891b2)',
             color: '#000',
             fontWeight: 700,
-            borderRadius: '0.75rem',
-            padding: '0.875rem 2rem',
+            borderRadius: '0.875rem',
+            padding: '1rem 2rem',
             textDecoration: 'none',
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
+            fontSize: '1.05rem',
+            boxShadow: '0 8px 24px rgba(6,182,212,0.25)',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            const el = e.currentTarget as HTMLElement;
+            el.style.transform = 'translateY(-2px)';
+            el.style.boxShadow = '0 12px 32px rgba(6,182,212,0.35)';
+          }}
+          onMouseLeave={(e) => {
+            const el = e.currentTarget as HTMLElement;
+            el.style.transform = 'translateY(0)';
+            el.style.boxShadow = '0 8px 24px rgba(6,182,212,0.25)';
           }}
         >
           Ver catálogo <ArrowRight size={18} />
@@ -115,18 +136,43 @@ export default function CartPage() {
   }
 
   return (
-    <div style={{ backgroundColor: '#070d1a', minHeight: '100vh', padding: '2rem 0 4rem' }}>
+    <div style={{ backgroundColor: '#070d1a', minHeight: '100vh', padding: '3rem 0 4rem' }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 style={{ color: '#f1f5f9', fontWeight: 800, fontSize: '1.75rem' }}>
-            Carrinho de Compras
-          </h1>
-          <button
-            onClick={clearCart}
-            style={{ color: '#64748b', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.85rem' }}
-          >
-            Limpar carrinho
-          </button>
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h1 style={{ color: '#f1f5f9', fontWeight: 900, fontSize: '2.5rem', margin: 0, lineHeight: 1.2 }}>
+                Carrinho de Compras
+              </h1>
+              <p style={{ color: '#94a3b8', fontSize: '0.95rem', margin: '0.5rem 0 0', fontWeight: 400 }}>
+                {items.reduce((s, i) => s + i.quantity, 0)} {items.reduce((s, i) => s + i.quantity, 0) === 1 ? 'item' : 'itens'} adicionados
+              </p>
+            </div>
+            <button
+              onClick={clearCart}
+              style={{
+                color: '#ef4444',
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.2)',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+                borderRadius: '0.5rem',
+                padding: '0.5rem 1rem',
+                fontWeight: 600,
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = 'rgba(239, 68, 68, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = 'rgba(239, 68, 68, 0.1)';
+              }}
+            >
+              Limpar carrinho
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -137,13 +183,27 @@ export default function CartPage() {
                 <div
                   key={`${item.book.id}-${item.format}`}
                   style={{
-                    background: '#0f1829',
+                    background: 'linear-gradient(135deg, #0f1829 0%, #141e2e 100%)',
                     border: '1px solid #1e2d4a',
                     borderRadius: '1rem',
-                    padding: '1.25rem',
+                    padding: '1.5rem',
                     display: 'flex',
-                    gap: '1rem',
+                    gap: '1.25rem',
                     alignItems: 'flex-start',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                  }}
+                  onMouseEnter={(e) => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.borderColor = '#06b6d4';
+                    el.style.boxShadow = '0 4px 16px rgba(6, 182, 212, 0.15)';
+                    el.style.background = 'linear-gradient(135deg, #11192e 0%, #161f32 100%)';
+                  }}
+                  onMouseLeave={(e) => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.borderColor = '#1e2d4a';
+                    el.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
+                    el.style.background = 'linear-gradient(135deg, #0f1829 0%, #141e2e 100%)';
                   }}
                 >
                   <Link to={`/produto/${item.book.id}`}>
@@ -161,67 +221,141 @@ export default function CartPage() {
 
                   <div className="flex-1 min-w-0">
                     <Link to={`/produto/${item.book.id}`} style={{ textDecoration: 'none' }}>
-                      <div style={{ color: '#f1f5f9', fontWeight: 600, fontSize: '0.95rem', marginBottom: '0.2rem' }}>
+                      <div style={{
+                        color: '#f1f5f9',
+                        fontWeight: 700,
+                        fontSize: '1.05rem',
+                        marginBottom: '0.25rem',
+                        transition: 'color 0.2s ease',
+                      }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#06b6d4')}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#f1f5f9')}
+                      >
                         {item.book.title}
                       </div>
                     </Link>
-                    <div style={{ color: '#64748b', fontSize: '0.82rem', marginBottom: '0.5rem' }}>
-                      {item.book.author}
+                    <div style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.75rem', fontWeight: 500 }}>
+                      por {item.book.author}
                     </div>
                     <div
-                      className="inline-flex items-center gap-1"
+                      className="inline-flex items-center gap-2"
                       style={{
-                        background: '#1a2540',
-                        border: '1px solid #1e2d4a',
-                        color: '#94a3b8',
+                        background: 'rgba(6, 182, 212, 0.1)',
+                        border: '1px solid rgba(6, 182, 212, 0.3)',
+                        color: '#06b6d4',
                         borderRadius: '2rem',
-                        padding: '0.2rem 0.6rem',
-                        fontSize: '0.75rem',
-                        marginBottom: '0.75rem',
+                        padding: '0.4rem 0.8rem',
+                        fontSize: '0.8rem',
+                        marginBottom: '1rem',
+                        fontWeight: 600,
                       }}
                     >
                       {formatIcon(item.format)} {item.format}
                     </div>
 
-                    <div className="flex items-center justify-between flex-wrap gap-3">
+                    <div className="flex items-center justify-between flex-wrap gap-4">
                       <div
-                        className="flex items-center gap-1"
-                        style={{ background: '#1a2540', border: '1px solid #1e2d4a', borderRadius: '0.5rem', overflow: 'hidden' }}
+                        className="flex items-center"
+                        style={{
+                          background: '#1a2540',
+                          border: '1px solid #1e2d4a',
+                          borderRadius: '0.7rem',
+                          overflow: 'hidden',
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
                       >
                         <button
                           onClick={() => updateQuantity(item.book.id, item.format, item.quantity - 1)}
-                          style={{ padding: '0.4rem 0.75rem', color: '#94a3b8', background: 'none', border: 'none', cursor: 'pointer' }}
+                          style={{
+                            padding: '0.5rem 0.7rem',
+                            color: '#94a3b8',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#06b6d4')}
+                          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#94a3b8')}
                         >
-                          <Minus size={14} />
+                          <Minus size={16} />
                         </button>
-                        <span style={{ color: '#e2e8f0', fontWeight: 600, minWidth: '2rem', textAlign: 'center', fontSize: '0.875rem' }}>
+                        <div
+                          style={{
+                            color: '#e2e8f0',
+                            fontWeight: 600,
+                            minWidth: '2.5rem',
+                            textAlign: 'center',
+                            fontSize: '0.95rem',
+                            borderLeft: '1px solid #1e2d4a',
+                            borderRight: '1px solid #1e2d4a',
+                          }}
+                        >
                           {item.quantity}
-                        </span>
+                        </div>
                         <button
                           onClick={() => updateQuantity(item.book.id, item.format, item.quantity + 1)}
-                          style={{ padding: '0.4rem 0.75rem', color: '#94a3b8', background: 'none', border: 'none', cursor: 'pointer' }}
+                          style={{
+                            padding: '0.5rem 0.7rem',
+                            color: '#94a3b8',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#06b6d4')}
+                          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#94a3b8')}
                         >
-                          <Plus size={14} />
+                          <Plus size={16} />
                         </button>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                         <div style={{ textAlign: 'right' }}>
-                          <div style={{ color: '#64748b', fontSize: '0.72rem' }}>
-                            {item.quantity > 1 ? `${item.quantity}× ${formatPrice(price)}` : ''}
-                          </div>
-                          <div style={{ color: '#06b6d4', fontWeight: 700, fontSize: '1rem' }}>
+                          {item.quantity > 1 && (
+                            <div style={{ color: '#94a3b8', fontSize: '0.8rem', marginBottom: '0.25rem' }}>
+                              {item.quantity}× {formatPrice(price)}
+                            </div>
+                          )}
+                          <div style={{ color: '#06b6d4', fontWeight: 800, fontSize: '1.2rem' }}>
                             {formatPrice(price * item.quantity)}
                           </div>
                         </div>
                         <button
                           onClick={() => removeItem(item.book.id, item.format)}
-                          style={{ color: '#475569', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.2s', padding: '0.25rem' }}
-                          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#ef4444')}
-                          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#475569')}
+                          style={{
+                            color: '#64748b',
+                            background: 'rgba(239, 68, 68, 0.05)',
+                            border: '1px solid rgba(239, 68, 68, 0.15)',
+                            cursor: 'pointer',
+                            padding: '0.5rem',
+                            borderRadius: '0.5rem',
+                            transition: 'all 0.2s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          onMouseEnter={(e) => {
+                            const el = e.currentTarget as HTMLElement;
+                            el.style.color = '#ef4444';
+                            el.style.background = 'rgba(239, 68, 68, 0.15)';
+                            el.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                          }}
+                          onMouseLeave={(e) => {
+                            const el = e.currentTarget as HTMLElement;
+                            el.style.color = '#64748b';
+                            el.style.background = 'rgba(239, 68, 68, 0.05)';
+                            el.style.borderColor = 'rgba(239, 68, 68, 0.15)';
+                          }}
                           title="Remover item"
                         >
-                          <Trash2 size={17} />
+                          <Trash2 size={18} />
                         </button>
                       </div>
                     </div>
@@ -232,7 +366,25 @@ export default function CartPage() {
 
             <Link
               to="/catalogo"
-              style={{ color: '#06b6d4', fontSize: '0.875rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.5rem' }}
+              style={{
+                color: '#06b6d4',
+                fontSize: '0.9rem',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginTop: '1rem',
+                fontWeight: 600,
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.gap = '0.8rem';
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.gap = '0.5rem';
+              }}
             >
               ← Continuar comprando
             </Link>
@@ -241,51 +393,72 @@ export default function CartPage() {
           <div>
             <div
               style={{
-                background: '#0f1829',
+                background: 'linear-gradient(135deg, #0f1829 0%, #141e2e 100%)',
                 border: '1px solid #1e2d4a',
-                borderRadius: '1rem',
-                padding: '1.5rem',
+                borderRadius: '1.25rem',
+                padding: '2rem 1.75rem',
                 position: 'sticky',
                 top: '5rem',
+                boxShadow: '0 8px 32px rgba(6, 182, 212, 0.08)',
               }}
             >
-              <h2 style={{ color: '#f1f5f9', fontWeight: 700, fontSize: '1.1rem', marginBottom: '1.25rem' }}>
+              <h2 style={{ color: '#f1f5f9', fontWeight: 800, fontSize: '1.35rem', marginBottom: '1.75rem', margin: 0 }}>
                 Resumo do Pedido
               </h2>
 
-              <div className="flex flex-col gap-3" style={{ marginBottom: '1.25rem' }}>
+              <div className="flex flex-col gap-4" style={{ marginBottom: '1.75rem', paddingBottom: '1.75rem', borderBottom: '1px solid rgba(30, 45, 74, 0.5)' }}>
                 <div className="flex items-center justify-between">
-                  <span style={{ color: '#94a3b8', fontSize: '0.9rem' }}>
-                    Subtotal ({items.reduce((s, i) => s + i.quantity, 0)} {items.length === 1 ? 'item' : 'itens'})
+                  <span style={{ color: '#94a3b8', fontSize: '0.95rem', fontWeight: 500 }}>
+                    Subtotal
                   </span>
-                  <span style={{ color: '#e2e8f0', fontWeight: 600, fontSize: '0.9rem' }}>{formatPrice(totalPrice)}</span>
+                  <span style={{ color: '#e2e8f0', fontWeight: 700, fontSize: '1rem' }}>{formatPrice(totalPrice)}</span>
+                </div>
+                <div style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 500 }}>
+                  {items.reduce((s, i) => s + i.quantity, 0)} {items.reduce((s, i) => s + i.quantity, 0) === 1 ? 'item' : 'itens'}
                 </div>
 
                 {hasPhysical && (
                   <div>
                     <div className="flex items-center justify-between">
-                      <span style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Frete</span>
+                      <span style={{ color: '#94a3b8', fontSize: '0.95rem', fontWeight: 500 }}>Frete</span>
                       {frete ? (
                         <span
                           className="flex items-center gap-2"
-                          style={{ color: freteValor === 0 ? '#10b981' : '#e2e8f0', fontWeight: 600, fontSize: '0.9rem' }}
+                          style={{
+                            color: freteValor === 0 ? '#10b981' : '#e2e8f0',
+                            fontWeight: 700,
+                            fontSize: '1rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                          }}
                         >
                           {freteValor === 0 ? 'Grátis' : formatPrice(freteValor)}
                           <button
                             onClick={trocarCep}
                             title="Trocar CEP"
-                            style={{ color: '#64748b', background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}
+                            style={{
+                              color: '#64748b',
+                              background: 'none',
+                              border: 'none',
+                              cursor: 'pointer',
+                              padding: '0.25rem',
+                              display: 'flex',
+                              transition: 'color 0.2s ease',
+                            }}
+                            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#06b6d4')}
+                            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#64748b')}
                           >
-                            <Pencil size={13} />
+                            <Pencil size={14} />
                           </button>
                         </span>
                       ) : (
-                        <span style={{ color: '#64748b', fontSize: '0.82rem' }}>Informe o CEP</span>
+                        <span style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 500 }}>Informe o CEP</span>
                       )}
                     </div>
 
                     {!frete && (
-                      <div className="flex flex-col gap-2" style={{ marginTop: '0.6rem' }}>
+                      <div className="flex flex-col gap-2.5" style={{ marginTop: '1rem' }}>
                         <div className="flex items-center gap-2">
                           <input
                             type="text"
@@ -297,36 +470,60 @@ export default function CartPage() {
                               flex: 1,
                               background: '#1a2540',
                               border: '1px solid #1e2d4a',
-                              borderRadius: '0.5rem',
-                              padding: '0.5rem 0.75rem',
+                              borderRadius: '0.6rem',
+                              padding: '0.65rem 0.85rem',
                               color: '#e2e8f0',
-                              fontSize: '0.85rem',
+                              fontSize: '0.9rem',
                               outline: 'none',
+                              transition: 'all 0.2s ease',
+                            }}
+                            onFocus={(e) => {
+                              const el = e.currentTarget as HTMLElement;
+                              el.style.borderColor = '#06b6d4';
+                              el.style.boxShadow = '0 0 0 2px rgba(6, 182, 212, 0.1)';
+                            }}
+                            onBlur={(e) => {
+                              const el = e.currentTarget as HTMLElement;
+                              el.style.borderColor = '#1e2d4a';
+                              el.style.boxShadow = 'none';
                             }}
                           />
                           <button
                             onClick={() => calcularFrete(cep)}
                             disabled={freteLoading || !cep.trim()}
                             style={{
-                              background: '#1a2540',
-                              border: '1px solid #1e2d4a',
-                              color: '#e2e8f0',
-                              borderRadius: '0.5rem',
-                              padding: '0.5rem 0.9rem',
-                              fontSize: '0.82rem',
-                              fontWeight: 600,
-                              cursor: freteLoading || !cep.trim() ? 'default' : 'pointer',
-                              opacity: freteLoading || !cep.trim() ? 0.6 : 1,
+                              background: 'linear-gradient(135deg, #06b6d4, #0891b2)',
+                              border: 'none',
+                              color: '#000',
+                              borderRadius: '0.6rem',
+                              padding: '0.65rem 1rem',
+                              fontSize: '0.85rem',
+                              fontWeight: 700,
+                              cursor: freteLoading || !cep.trim() ? 'not-allowed' : 'pointer',
+                              opacity: freteLoading || !cep.trim() ? 0.5 : 1,
                               display: 'flex',
                               alignItems: 'center',
                               gap: '0.4rem',
                               whiteSpace: 'nowrap',
+                              transition: 'all 0.2s ease',
                             }}
                           >
                             {freteLoading ? <Loader2 size={14} className="animate-spin" /> : 'Calcular'}
                           </button>
                         </div>
-                        {freteErro && <div style={{ color: '#ef4444', fontSize: '0.78rem' }}>{freteErro}</div>}
+                        {freteErro && (
+                          <div style={{
+                            color: '#ef4444',
+                            fontSize: '0.8rem',
+                            background: 'rgba(239, 68, 68, 0.1)',
+                            border: '1px solid rgba(239, 68, 68, 0.2)',
+                            borderRadius: '0.5rem',
+                            padding: '0.5rem 0.75rem',
+                            fontWeight: 500,
+                          }}>
+                            {freteErro}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -334,22 +531,29 @@ export default function CartPage() {
 
                 {!hasPhysical && (
                   <div className="flex items-center justify-between">
-                    <span style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Entrega (E-book)</span>
-                    <span style={{ color: '#10b981', fontWeight: 600, fontSize: '0.9rem' }}>Download imediato</span>
+                    <span style={{ color: '#94a3b8', fontSize: '0.95rem', fontWeight: 500 }}>Entrega (E-book)</span>
+                    <span style={{ color: '#10b981', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      ✓ Download imediato
+                    </span>
                   </div>
                 )}
 
                 {hasPhysical && frete && freteValor > 0 && totalPrice < FRETE_GRATIS_MINIMO && (
                   <div
                     style={{
-                      background: 'rgba(16,185,129,0.08)',
-                      border: '1px solid rgba(16,185,129,0.2)',
-                      borderRadius: '0.5rem',
-                      padding: '0.625rem 0.875rem',
-                      fontSize: '0.78rem',
+                      background: 'linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.05))',
+                      border: '1px solid rgba(16,185,129,0.3)',
+                      borderRadius: '0.7rem',
+                      padding: '0.85rem 1rem',
+                      fontSize: '0.85rem',
                       color: '#10b981',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
                     }}
                   >
+                    <span style={{ fontSize: '1.1rem' }}>✨</span>
                     Adicione {formatPrice(FRETE_GRATIS_MINIMO - totalPrice)} mais para frete grátis!
                   </div>
                 )}
